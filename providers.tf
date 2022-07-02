@@ -1,4 +1,10 @@
 terraform {
+  cloud {
+    organization = "alexeastaugh"
+    workspaces {
+      name = "dev_environment"
+    }
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -8,7 +14,5 @@ terraform {
 }
 
 provider "aws" {
-  region                  = "eu-west-1"
-  shared_credentials_file = "$HOME/.aws/credentials"
-  profile                 = "default"
+  region = "eu-west-1"
 }

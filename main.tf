@@ -56,8 +56,8 @@ resource "aws_security_group" "dev_sg" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
-    cidr_blocks      = ["176.26.65.67/32"]
-    ipv6_cidr_blocks = ["2a02:c7f::/32"]
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   egress {
@@ -71,7 +71,7 @@ resource "aws_security_group" "dev_sg" {
 
 resource "aws_key_pair" "dev_auth" {
   key_name   = "alex_01022017"
-  public_key = file("~/.ssh/alex_01022017/alex_01022017.pub")
+  public_key = var.ALEX_01022017
 }
 
 resource "aws_instance" "dev_instance" {
@@ -89,14 +89,4 @@ resource "aws_instance" "dev_instance" {
   tags = {
     "Name" = "dev_instance"
   }
-
-  provisioner "local-exec" {
-    command = templatefile("ssh_config.tpl", {
-      hostname     = self.public_ip
-      user         = "ubuntu"
-      identityfile = "~/.ssh/alex_01022017/alex_01022017"
-    })
-    interpreter = ["bash", "-c"]
-  }
-
 }
