@@ -1,11 +1,16 @@
+locals {
+  tags = {
+    Name    = development_env
+    Created = terrafornm
+  }
+}
+
 resource "aws_vpc" "dev_vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = {
-    Name = "dev"
-  }
+  tags = local.tags
 }
 
 resource "aws_subnet" "dev_public_subnet" {
@@ -14,25 +19,19 @@ resource "aws_subnet" "dev_public_subnet" {
   map_public_ip_on_launch = true
   availability_zone       = "eu-west-1a"
 
-  tags = {
-    "Name" = "dev_public"
-  }
+  tags = local.tags
 }
 
 resource "aws_internet_gateway" "dev_igw" {
   vpc_id = aws_vpc.dev_vpc.id
 
-  tags = {
-    "Name" = "dev_igw"
-  }
+  tags = local.tags
 }
 
 resource "aws_route_table" "dev_public_rt" {
   vpc_id = aws_vpc.dev_vpc.id
 
-  tags = {
-    "Name" = "dev_public_rt"
-  }
+  tags = local.tags
 }
 
 resource "aws_route" "default_route" {
@@ -86,7 +85,5 @@ resource "aws_instance" "dev_instance" {
     volume_size = 10
   }
 
-  tags = {
-    "Name" = "dev_instance"
-  }
+  tags = local.tags
 }
