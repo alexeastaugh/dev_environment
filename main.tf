@@ -1,7 +1,7 @@
 locals {
   tags = {
-    Name    = development_env
-    Created = terrafornm
+    name    = "development_env"
+    created = "terrafornm"
   }
 }
 
